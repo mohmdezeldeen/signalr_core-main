@@ -209,7 +209,7 @@ class HubConnection {
         // will cause the calling continuation to get scheduled to run later.
         throw _stopDuringStartError!;
       }
-    } catch (e) {
+    } on Exception catch (e) {
       _logger!(LogLevel.debug,
           'Hub handshake failed with error \'${e.toString()}\' during start(). Stopping HubConnection.');
 
@@ -218,7 +218,7 @@ class HubConnection {
 
       // HttpConnection.stop() should not complete until after the onclose callback is invoked.
       // This will transition the HubConnection to the disconnected state before HttpConnection.stop() completes.
-      await _connection!.stop(exception: e as Exception);
+      await _connection!.stop(exception: e);
       rethrow;
     }
   }
